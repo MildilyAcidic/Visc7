@@ -1,0 +1,1212 @@
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+
+NightVisionEffect = {
+	MonitoredInstances = {}, 
+	Connections = {}, 
+	Connections2 = {}, 
+	RSN = 0
+}
+
+NightVisionEffect.Config = {
+	COLOR = Color3.fromRGB(255, 140, 140), 
+	ACCESSORY_COLOR = Color3.new(1, 1, 1), 
+	DefaultGrainS = {
+		Size = 30, 
+		Speed = 50, 
+		Visibility = 0.9
+	}, 
+	NeonMulti = 0.5, 
+	ArmorMulti = 0.5, 
+	ToolMulti = 0.75, 
+	VPartMulti = 0.6
+}
+
+local function u2(p1, p2, p3, p4, p5)
+	if not NightVisionEffect.Connections2[p1] then
+		NightVisionEffect.Connections2[p1] = {}
+	end
+	local v4 = p1:GetPropertyChangedSignal(p2):Connect(function()
+		pcall(function()
+			NightVisionEffect.Connections2[p1][p2]:Disconnect()
+		end)
+		NightVisionEffect.Connections2[p1][p2] = nil
+		MonitorPart(p1, p3, p4, p5, p2)
+	end)
+	if NightVisionEffect.Connections2[p1][p2] then
+		pcall(function()
+			NightVisionEffect.Connections2[p1][p2]:Disconnect()
+		end)
+	end
+	NightVisionEffect.Connections2[p1][p2] = v4
+	table.insert(NightVisionEffect.Connections, v4)
+end
+local function u3()
+	NightVisionEffect.RSN = NightVisionEffect.RSN + 1
+	if NightVisionEffect.RSN >= 600 then
+		NightVisionEffect.RSN = 0
+RunService.RenderStepped:Wait()
+	end
+end
+local v6
+local v9
+local v10
+local v15
+local v16
+function MonitorPart(p6, p7, p8, p9, p10)
+	if _G.VM then
+		if _G.VM.CloneTool then
+			if p6:IsDescendantOf(_G.VM.CloneTool) then
+				return
+			end
+		end
+	end
+	local function v5(p11, p12)
+		if not p12 then
+			if p11.Name == "face" then
+				if not p11:IsA("Decal") then
+					if p11:IsA("Texture") then
+						v6 = NightVisionEffect.MonitoredInstances[p11] or {}
+						if NightVisionEffect.MonitoredInstances[p11] then
+							if NightVisionEffect.MonitoredInstances[p11].Transparency then
+								if p10 == "Transparency" then
+									v6.Transparency = p11.Transparency
+									p11.Transparency = 1
+								end
+							else
+								v6.Transparency = p11.Transparency
+								p11.Transparency = 1
+							end
+						else
+							v6.Transparency = p11.Transparency
+							p11.Transparency = 1
+						end
+						NightVisionEffect.MonitoredInstances[p11] = v6
+						u2(p11, "Transparency", p7, p8, p9)
+						u3()
+					end
+				else
+					v6 = NightVisionEffect.MonitoredInstances[p11] or {}
+					if NightVisionEffect.MonitoredInstances[p11] then
+						if NightVisionEffect.MonitoredInstances[p11].Transparency then
+							if p10 == "Transparency" then
+								v6.Transparency = p11.Transparency
+								p11.Transparency = 1
+							end
+						else
+							v6.Transparency = p11.Transparency
+							p11.Transparency = 1
+						end
+					else
+						v6.Transparency = p11.Transparency
+						p11.Transparency = 1
+					end
+					NightVisionEffect.MonitoredInstances[p11] = v6
+					u2(p11, "Transparency", p7, p8, p9)
+					u3()
+				end
+			end
+		elseif not p11:IsA("Decal") then
+			if p11:IsA("Texture") then
+				v6 = NightVisionEffect.MonitoredInstances[p11] or {}
+				if NightVisionEffect.MonitoredInstances[p11] then
+					if NightVisionEffect.MonitoredInstances[p11].Transparency then
+						if p10 == "Transparency" then
+							v6.Transparency = p11.Transparency
+							p11.Transparency = 1
+						end
+					else
+						v6.Transparency = p11.Transparency
+						p11.Transparency = 1
+					end
+				else
+					v6.Transparency = p11.Transparency
+					p11.Transparency = 1
+				end
+				NightVisionEffect.MonitoredInstances[p11] = v6
+				u2(p11, "Transparency", p7, p8, p9)
+				u3()
+			end
+		else
+			v6 = NightVisionEffect.MonitoredInstances[p11] or {}
+			if NightVisionEffect.MonitoredInstances[p11] then
+				if NightVisionEffect.MonitoredInstances[p11].Transparency then
+					if p10 == "Transparency" then
+						v6.Transparency = p11.Transparency
+						p11.Transparency = 1
+					end
+				else
+					v6.Transparency = p11.Transparency
+					p11.Transparency = 1
+				end
+			else
+				v6.Transparency = p11.Transparency
+				p11.Transparency = 1
+			end
+			NightVisionEffect.MonitoredInstances[p11] = v6
+			u2(p11, "Transparency", p7, p8, p9)
+			u3()
+		end
+	end
+	local function v7(p13, p14)
+		if p13 then
+			if p13:IsA("SpecialMesh") then
+				if p13.MeshId ~= "" then
+					if not p7 then
+						local v8 = NightVisionEffect.MonitoredInstances[p13] or {}
+						if NightVisionEffect.MonitoredInstances[p13] then
+							if NightVisionEffect.MonitoredInstances[p13].TextureId then
+								if p10 == "TextureId" then
+									v8.VertexColor = p13.VertexColor
+									v8.TextureId = p13.TextureId
+									v9 = NightVisionEffect.MonitoredInstances[p13.Parent] or {}
+									v9.SMP = true
+									NightVisionEffect.MonitoredInstances[p13.Parent] = v9
+									p13.VertexColor = Vector3.new(1, 1, 1)
+									p13.TextureId = ""
+								end
+							else
+								v8.VertexColor = p13.VertexColor
+								v8.TextureId = p13.TextureId
+								v9 = NightVisionEffect.MonitoredInstances[p13.Parent] or {}
+								v9.SMP = true
+								NightVisionEffect.MonitoredInstances[p13.Parent] = v9
+								p13.VertexColor = Vector3.new(1, 1, 1)
+								p13.TextureId = ""
+							end
+						else
+							v8.VertexColor = p13.VertexColor
+							v8.TextureId = p13.TextureId
+							v9 = NightVisionEffect.MonitoredInstances[p13.Parent] or {}
+							v9.SMP = true
+							NightVisionEffect.MonitoredInstances[p13.Parent] = v9
+							p13.VertexColor = Vector3.new(1, 1, 1)
+							p13.TextureId = ""
+						end
+						u2(p13, "TextureId", p7, p8, p9)
+						NightVisionEffect.MonitoredInstances[p13] = v8
+						u3()
+					end
+				end
+			end
+		end
+	end
+	if p6:IsA("BasePart") then
+
+	elseif not p6:IsA("PointLight") then
+		if not p6:IsA("SurfaceLight") then
+			if p6:IsA("SpotLight") then
+				v10 = NightVisionEffect.MonitoredInstances[p6] or {}
+				v10.Enabled = p6.Enabled
+				if NightVisionEffect.MonitoredInstances[p6] then
+					if NightVisionEffect.MonitoredInstances[p6].Enabled then
+						if p10 == "Enabled" then
+							p6.Enabled = false
+						end
+					else
+						p6.Enabled = false
+					end
+				else
+					p6.Enabled = false
+				end
+				NightVisionEffect.MonitoredInstances[p6] = v10
+				u2(p6, "Enabled", p7, p8, p9)
+				u3()
+				return
+			elseif not p6:IsA("Decal") then
+				if p6:IsA("Texture") then
+					v5(p6)
+					return
+				else
+					if p6:IsA("SpecialMesh") then
+						if p6:IsDescendantOf(workspace.Debris.VParts) then
+							v7(p6)
+						end
+					end
+					return
+				end
+			else
+				v5(p6)
+				return
+			end
+		else
+			v10 = NightVisionEffect.MonitoredInstances[p6] or {}
+			v10.Enabled = p6.Enabled
+			if NightVisionEffect.MonitoredInstances[p6] then
+				if NightVisionEffect.MonitoredInstances[p6].Enabled then
+					if p10 == "Enabled" then
+						p6.Enabled = false
+					end
+				else
+					p6.Enabled = false
+				end
+			else
+				p6.Enabled = false
+			end
+			NightVisionEffect.MonitoredInstances[p6] = v10
+			u2(p6, "Enabled", p7, p8, p9)
+			u3()
+			return
+		end
+	else
+		v10 = NightVisionEffect.MonitoredInstances[p6] or {}
+		v10.Enabled = p6.Enabled
+		if NightVisionEffect.MonitoredInstances[p6] then
+			if NightVisionEffect.MonitoredInstances[p6].Enabled then
+				if p10 == "Enabled" then
+					p6.Enabled = false
+				end
+			else
+				p6.Enabled = false
+			end
+		else
+			p6.Enabled = false
+		end
+		NightVisionEffect.MonitoredInstances[p6] = v10
+		u2(p6, "Enabled", p7, p8, p9)
+		u3()
+		return
+	end
+	local v11 = p6.Parent and (p6.Parent:FindFirstChild("Humanoid") or p6.Parent:FindFirstChild("NPC"))
+	local v12 = not v11 and (p8 or (p6:IsDescendantOf(workspace.Filter.SpawnedBread) or (p6:IsDescendantOf(workspace.Filter.SpawnedPiles) or (p6:IsDescendantOf(workspace.Debris.VParts) or (p6:IsDescendantOf(workspace.Characters) or (p6:IsDescendantOf(workspace.Debris.BloodInstances) or p6:GetAttribute("T7H")))))))
+	local v13 = NightVisionEffect.MonitoredInstances[p6] or {}
+	if v11 then
+		if p7 then
+			if v12 then
+				if v12 then
+					if NightVisionEffect.MonitoredInstances[p6] then
+						if NightVisionEffect.MonitoredInstances[p6].Color then
+							if p10 == "Color" then
+								v13.Color = p6.Color
+								v13.OColor = v13.Color
+								v13.NColor = NightVisionEffect.Config.COLOR
+								if not p6:IsDescendantOf(workspace.Debris.BloodInstances) then
+									if not v13.SMP then
+										if not p6:GetAttribute("HasSpecialMesh") then
+											if p6:FindFirstChildOfClass("SpecialMesh") then
+												if p6:FindFirstChildOfClass("SpecialMesh").MeshId ~= "" then
+													p6.Color = NightVisionEffect.Config.COLOR
+												else
+													p6.Color = NightVisionEffect.Config.COLOR
+												end
+											else
+												p6.Color = NightVisionEffect.Config.COLOR
+											end
+										else
+											p6.Color = NightVisionEffect.Config.COLOR
+										end
+									else
+										p6.Color = NightVisionEffect.Config.COLOR
+									end
+								else
+									p6.Color = NightVisionEffect.Config.COLOR
+								end
+							end
+						else
+							v13.Color = p6.Color
+							v13.OColor = v13.Color
+							v13.NColor = NightVisionEffect.Config.COLOR
+							if not p6:IsDescendantOf(workspace.Debris.BloodInstances) then
+								if not v13.SMP then
+									if not p6:GetAttribute("HasSpecialMesh") then
+										if p6:FindFirstChildOfClass("SpecialMesh") then
+											if p6:FindFirstChildOfClass("SpecialMesh").MeshId ~= "" then
+												p6.Color = NightVisionEffect.Config.COLOR
+											else
+												p6.Color = NightVisionEffect.Config.COLOR
+											end
+										else
+											p6.Color = NightVisionEffect.Config.COLOR
+										end
+									else
+										p6.Color = NightVisionEffect.Config.COLOR
+									end
+								else
+									p6.Color = NightVisionEffect.Config.COLOR
+								end
+							else
+								p6.Color = NightVisionEffect.Config.COLOR
+							end
+						end
+					else
+						v13.Color = p6.Color
+						v13.OColor = v13.Color
+						v13.NColor = NightVisionEffect.Config.COLOR
+						if not p6:IsDescendantOf(workspace.Debris.BloodInstances) then
+							if not v13.SMP then
+								if not p6:GetAttribute("HasSpecialMesh") then
+									if p6:FindFirstChildOfClass("SpecialMesh") then
+										if p6:FindFirstChildOfClass("SpecialMesh").MeshId ~= "" then
+											p6.Color = NightVisionEffect.Config.COLOR
+										else
+											p6.Color = NightVisionEffect.Config.COLOR
+										end
+									else
+										p6.Color = NightVisionEffect.Config.COLOR
+									end
+								else
+									p6.Color = NightVisionEffect.Config.COLOR
+								end
+							else
+								p6.Color = NightVisionEffect.Config.COLOR
+							end
+						else
+							p6.Color = NightVisionEffect.Config.COLOR
+						end
+					end
+				end
+				if NightVisionEffect.MonitoredInstances[p6] then
+					if NightVisionEffect.MonitoredInstances[p6].Material then
+						if p10 == "Material" then
+							v13.Material = p6.Material
+							p6.Material = Enum.Material.Neon
+						end
+					else
+						v13.Material = p6.Material
+						p6.Material = Enum.Material.Neon
+					end
+				else
+					v13.Material = p6.Material
+					p6.Material = Enum.Material.Neon
+				end
+				u2(p6, "Material", p7, p8, p9)
+				u3()
+			end
+		else
+			if v12 then
+				if NightVisionEffect.MonitoredInstances[p6] then
+					if NightVisionEffect.MonitoredInstances[p6].Color then
+						if p10 == "Color" then
+							v13.Color = p6.Color
+							v13.OColor = v13.Color
+							v13.NColor = NightVisionEffect.Config.COLOR
+							if not p6:IsDescendantOf(workspace.Debris.BloodInstances) then
+								if not v13.SMP then
+									if not p6:GetAttribute("HasSpecialMesh") then
+										if p6:FindFirstChildOfClass("SpecialMesh") then
+											if p6:FindFirstChildOfClass("SpecialMesh").MeshId ~= "" then
+												p6.Color = NightVisionEffect.Config.COLOR
+											else
+												p6.Color = NightVisionEffect.Config.COLOR
+											end
+										else
+											p6.Color = NightVisionEffect.Config.COLOR
+										end
+									else
+										p6.Color = NightVisionEffect.Config.COLOR
+									end
+								else
+									p6.Color = NightVisionEffect.Config.COLOR
+								end
+							else
+								p6.Color = NightVisionEffect.Config.COLOR
+							end
+						end
+					else
+						v13.Color = p6.Color
+						v13.OColor = v13.Color
+						v13.NColor = NightVisionEffect.Config.COLOR
+						if not p6:IsDescendantOf(workspace.Debris.BloodInstances) then
+							if not v13.SMP then
+								if not p6:GetAttribute("HasSpecialMesh") then
+									if p6:FindFirstChildOfClass("SpecialMesh") then
+										if p6:FindFirstChildOfClass("SpecialMesh").MeshId ~= "" then
+											p6.Color = NightVisionEffect.Config.COLOR
+										else
+											p6.Color = NightVisionEffect.Config.COLOR
+										end
+									else
+										p6.Color = NightVisionEffect.Config.COLOR
+									end
+								else
+									p6.Color = NightVisionEffect.Config.COLOR
+								end
+							else
+								p6.Color = NightVisionEffect.Config.COLOR
+							end
+						else
+							p6.Color = NightVisionEffect.Config.COLOR
+						end
+					end
+				else
+					v13.Color = p6.Color
+					v13.OColor = v13.Color
+					v13.NColor = NightVisionEffect.Config.COLOR
+					if not p6:IsDescendantOf(workspace.Debris.BloodInstances) then
+						if not v13.SMP then
+							if not p6:GetAttribute("HasSpecialMesh") then
+								if p6:FindFirstChildOfClass("SpecialMesh") then
+									if p6:FindFirstChildOfClass("SpecialMesh").MeshId ~= "" then
+										p6.Color = NightVisionEffect.Config.COLOR
+									else
+										p6.Color = NightVisionEffect.Config.COLOR
+									end
+								else
+									p6.Color = NightVisionEffect.Config.COLOR
+								end
+							else
+								p6.Color = NightVisionEffect.Config.COLOR
+							end
+						else
+							p6.Color = NightVisionEffect.Config.COLOR
+						end
+					else
+						p6.Color = NightVisionEffect.Config.COLOR
+					end
+				end
+			end
+			if NightVisionEffect.MonitoredInstances[p6] then
+				if NightVisionEffect.MonitoredInstances[p6].Material then
+					if p10 == "Material" then
+						v13.Material = p6.Material
+						p6.Material = Enum.Material.Neon
+					end
+				else
+					v13.Material = p6.Material
+					p6.Material = Enum.Material.Neon
+				end
+			else
+				v13.Material = p6.Material
+				p6.Material = Enum.Material.Neon
+			end
+			u2(p6, "Material", p7, p8, p9)
+			u3()
+		end
+	elseif v12 then
+		if v12 then
+			if NightVisionEffect.MonitoredInstances[p6] then
+				if NightVisionEffect.MonitoredInstances[p6].Color then
+					if p10 == "Color" then
+						v13.Color = p6.Color
+						v13.OColor = v13.Color
+						v13.NColor = NightVisionEffect.Config.COLOR
+						if not p6:IsDescendantOf(workspace.Debris.BloodInstances) then
+							if not v13.SMP then
+								if not p6:GetAttribute("HasSpecialMesh") then
+									if p6:FindFirstChildOfClass("SpecialMesh") then
+										if p6:FindFirstChildOfClass("SpecialMesh").MeshId ~= "" then
+											p6.Color = NightVisionEffect.Config.COLOR
+										else
+											p6.Color = NightVisionEffect.Config.COLOR
+										end
+									else
+										p6.Color = NightVisionEffect.Config.COLOR
+									end
+								else
+									p6.Color = NightVisionEffect.Config.COLOR
+								end
+							else
+								p6.Color = NightVisionEffect.Config.COLOR
+							end
+						else
+							p6.Color = NightVisionEffect.Config.COLOR
+						end
+					end
+				else
+					v13.Color = p6.Color
+					v13.OColor = v13.Color
+					v13.NColor = NightVisionEffect.Config.COLOR
+					if not p6:IsDescendantOf(workspace.Debris.BloodInstances) then
+						if not v13.SMP then
+							if not p6:GetAttribute("HasSpecialMesh") then
+								if p6:FindFirstChildOfClass("SpecialMesh") then
+									if p6:FindFirstChildOfClass("SpecialMesh").MeshId ~= "" then
+										p6.Color = NightVisionEffect.Config.COLOR
+									else
+										p6.Color = NightVisionEffect.Config.COLOR
+									end
+								else
+									p6.Color = NightVisionEffect.Config.COLOR
+								end
+							else
+								p6.Color = NightVisionEffect.Config.COLOR
+							end
+						else
+							p6.Color = NightVisionEffect.Config.COLOR
+						end
+					else
+						p6.Color = NightVisionEffect.Config.COLOR
+					end
+				end
+			else
+				v13.Color = p6.Color
+				v13.OColor = v13.Color
+				v13.NColor = NightVisionEffect.Config.COLOR
+				if not p6:IsDescendantOf(workspace.Debris.BloodInstances) then
+					if not v13.SMP then
+						if not p6:GetAttribute("HasSpecialMesh") then
+							if p6:FindFirstChildOfClass("SpecialMesh") then
+								if p6:FindFirstChildOfClass("SpecialMesh").MeshId ~= "" then
+									p6.Color = NightVisionEffect.Config.COLOR
+								else
+									p6.Color = NightVisionEffect.Config.COLOR
+								end
+							else
+								p6.Color = NightVisionEffect.Config.COLOR
+							end
+						else
+							p6.Color = NightVisionEffect.Config.COLOR
+						end
+					else
+						p6.Color = NightVisionEffect.Config.COLOR
+					end
+				else
+					p6.Color = NightVisionEffect.Config.COLOR
+				end
+			end
+		end
+		if NightVisionEffect.MonitoredInstances[p6] then
+			if NightVisionEffect.MonitoredInstances[p6].Material then
+				if p10 == "Material" then
+					v13.Material = p6.Material
+					p6.Material = Enum.Material.Neon
+				end
+			else
+				v13.Material = p6.Material
+				p6.Material = Enum.Material.Neon
+			end
+		else
+			v13.Material = p6.Material
+			p6.Material = Enum.Material.Neon
+		end
+		u2(p6, "Material", p7, p8, p9)
+		u3()
+	end
+	local v14 = true
+	if p6.Material ~= Enum.Material.Neon then
+		v14 = p6.Name == "LightEmitter"
+	end
+	if v14 then
+		if p6.Name ~= "HeadMesh" then
+			if not v11 then
+				if v14 then
+					if NightVisionEffect.MonitoredInstances[p6] then
+						if NightVisionEffect.MonitoredInstances[p6].Color then
+							if NightVisionEffect.MonitoredInstances[p6].VM_Color then
+								if not NightVisionEffect.MonitoredInstances[p6].OColor then
+									if p10 == "Color" then
+										v13.Color = v13.OColor or p6.Color
+										v15 = v13.NColor or p6.Color
+										v16 = 1
+										if not p6:GetAttribute("HasSpecialMesh") then
+											if p6:FindFirstChildOfClass("SpecialMesh") then
+												if p6:FindFirstChildOfClass("SpecialMesh").MeshId ~= "" then
+													v16 = 20
+													v7(p6)
+												elseif p6:IsDescendantOf(workspace.Debris.BloodInstances) then
+													v15 = NightVisionEffect.Config.COLOR
+												elseif p9 then
+													v16 = NightVisionEffect.Config.ArmorMulti
+												elseif p8 then
+													v16 = NightVisionEffect.Config.ToolMulti
+												elseif v12 then
+													v16 = NightVisionEffect.Config.VPartMulti
+												else
+													v16 = NightVisionEffect.Config.NeonMulti
+												end
+											elseif p6:IsDescendantOf(workspace.Debris.BloodInstances) then
+												v15 = NightVisionEffect.Config.COLOR
+											elseif p9 then
+												v16 = NightVisionEffect.Config.ArmorMulti
+											elseif p8 then
+												v16 = NightVisionEffect.Config.ToolMulti
+											elseif v12 then
+												v16 = NightVisionEffect.Config.VPartMulti
+											else
+												v16 = NightVisionEffect.Config.NeonMulti
+											end
+										else
+											v16 = 20
+											v7(p6)
+										end
+										if not v13.VM_Color then
+											p6.Color = Color3.new(math.min(v15.R * v16, 1), math.min(v15.G * v16, 1), math.min(v15.B * v16, 1))
+											if p6:IsA("UnionOperation") then
+												if NightVisionEffect.MonitoredInstances[p6] then
+													if not NightVisionEffect.MonitoredInstances[p6].UsePartColor then
+														v13.UsePartColor = p6:IsA("UnionOperation") and p6.UsePartColor or nil
+														p6.UsePartColor = true
+													end
+												else
+													v13.UsePartColor = p6:IsA("UnionOperation") and p6.UsePartColor or nil
+													p6.UsePartColor = true
+												end
+											end
+										end
+										if _G.VM and (_G.VM.CloneTool and p6:IsDescendantOf(_G.VM.CloneTool)) then
+											v13.VM_Color = true
+										end
+									end
+								else
+									v13.Color = v13.OColor or p6.Color
+									v15 = v13.NColor or p6.Color
+									v16 = 1
+									if not p6:GetAttribute("HasSpecialMesh") then
+										if p6:FindFirstChildOfClass("SpecialMesh") then
+											if p6:FindFirstChildOfClass("SpecialMesh").MeshId ~= "" then
+												v16 = 20
+												v7(p6)
+											elseif p6:IsDescendantOf(workspace.Debris.BloodInstances) then
+												v15 = NightVisionEffect.Config.COLOR
+											elseif p9 then
+												v16 = NightVisionEffect.Config.ArmorMulti
+											elseif p8 then
+												v16 = NightVisionEffect.Config.ToolMulti
+											elseif v12 then
+												v16 = NightVisionEffect.Config.VPartMulti
+											else
+												v16 = NightVisionEffect.Config.NeonMulti
+											end
+										elseif p6:IsDescendantOf(workspace.Debris.BloodInstances) then
+											v15 = NightVisionEffect.Config.COLOR
+										elseif p9 then
+											v16 = NightVisionEffect.Config.ArmorMulti
+										elseif p8 then
+											v16 = NightVisionEffect.Config.ToolMulti
+										elseif v12 then
+											v16 = NightVisionEffect.Config.VPartMulti
+										else
+											v16 = NightVisionEffect.Config.NeonMulti
+										end
+									else
+										v16 = 20
+										v7(p6)
+									end
+									if not v13.VM_Color then
+										p6.Color = Color3.new(math.min(v15.R * v16, 1), math.min(v15.G * v16, 1), math.min(v15.B * v16, 1))
+										if p6:IsA("UnionOperation") then
+											if NightVisionEffect.MonitoredInstances[p6] then
+												if not NightVisionEffect.MonitoredInstances[p6].UsePartColor then
+													v13.UsePartColor = p6:IsA("UnionOperation") and p6.UsePartColor or nil
+													p6.UsePartColor = true
+												end
+											else
+												v13.UsePartColor = p6:IsA("UnionOperation") and p6.UsePartColor or nil
+												p6.UsePartColor = true
+											end
+										end
+									end
+									if _G.VM and (_G.VM.CloneTool and p6:IsDescendantOf(_G.VM.CloneTool)) then
+										v13.VM_Color = true
+									end
+								end
+							else
+								v13.Color = v13.OColor or p6.Color
+								v15 = v13.NColor or p6.Color
+								v16 = 1
+								if not p6:GetAttribute("HasSpecialMesh") then
+									if p6:FindFirstChildOfClass("SpecialMesh") then
+										if p6:FindFirstChildOfClass("SpecialMesh").MeshId ~= "" then
+											v16 = 20
+											v7(p6)
+										elseif p6:IsDescendantOf(workspace.Debris.BloodInstances) then
+											v15 = NightVisionEffect.Config.COLOR
+										elseif p9 then
+											v16 = NightVisionEffect.Config.ArmorMulti
+										elseif p8 then
+											v16 = NightVisionEffect.Config.ToolMulti
+										elseif v12 then
+											v16 = NightVisionEffect.Config.VPartMulti
+										else
+											v16 = NightVisionEffect.Config.NeonMulti
+										end
+									elseif p6:IsDescendantOf(workspace.Debris.BloodInstances) then
+										v15 = NightVisionEffect.Config.COLOR
+									elseif p9 then
+										v16 = NightVisionEffect.Config.ArmorMulti
+									elseif p8 then
+										v16 = NightVisionEffect.Config.ToolMulti
+									elseif v12 then
+										v16 = NightVisionEffect.Config.VPartMulti
+									else
+										v16 = NightVisionEffect.Config.NeonMulti
+									end
+								else
+									v16 = 20
+									v7(p6)
+								end
+								if not v13.VM_Color then
+									p6.Color = Color3.new(math.min(v15.R * v16, 1), math.min(v15.G * v16, 1), math.min(v15.B * v16, 1))
+									if p6:IsA("UnionOperation") then
+										if NightVisionEffect.MonitoredInstances[p6] then
+											if not NightVisionEffect.MonitoredInstances[p6].UsePartColor then
+												v13.UsePartColor = p6:IsA("UnionOperation") and p6.UsePartColor or nil
+												p6.UsePartColor = true
+											end
+										else
+											v13.UsePartColor = p6:IsA("UnionOperation") and p6.UsePartColor or nil
+											p6.UsePartColor = true
+										end
+									end
+								end
+								if _G.VM and (_G.VM.CloneTool and p6:IsDescendantOf(_G.VM.CloneTool)) then
+									v13.VM_Color = true
+								end
+							end
+						else
+							v13.Color = v13.OColor or p6.Color
+							v15 = v13.NColor or p6.Color
+							v16 = 1
+							if not p6:GetAttribute("HasSpecialMesh") then
+								if p6:FindFirstChildOfClass("SpecialMesh") then
+									if p6:FindFirstChildOfClass("SpecialMesh").MeshId ~= "" then
+										v16 = 20
+										v7(p6)
+									elseif p6:IsDescendantOf(workspace.Debris.BloodInstances) then
+										v15 = NightVisionEffect.Config.COLOR
+									elseif p9 then
+										v16 = NightVisionEffect.Config.ArmorMulti
+									elseif p8 then
+										v16 = NightVisionEffect.Config.ToolMulti
+									elseif v12 then
+										v16 = NightVisionEffect.Config.VPartMulti
+									else
+										v16 = NightVisionEffect.Config.NeonMulti
+									end
+								elseif p6:IsDescendantOf(workspace.Debris.BloodInstances) then
+									v15 = NightVisionEffect.Config.COLOR
+								elseif p9 then
+									v16 = NightVisionEffect.Config.ArmorMulti
+								elseif p8 then
+									v16 = NightVisionEffect.Config.ToolMulti
+								elseif v12 then
+									v16 = NightVisionEffect.Config.VPartMulti
+								else
+									v16 = NightVisionEffect.Config.NeonMulti
+								end
+							else
+								v16 = 20
+								v7(p6)
+							end
+							if not v13.VM_Color then
+								p6.Color = Color3.new(math.min(v15.R * v16, 1), math.min(v15.G * v16, 1), math.min(v15.B * v16, 1))
+								if p6:IsA("UnionOperation") then
+									if NightVisionEffect.MonitoredInstances[p6] then
+										if not NightVisionEffect.MonitoredInstances[p6].UsePartColor then
+											v13.UsePartColor = p6:IsA("UnionOperation") and p6.UsePartColor or nil
+											p6.UsePartColor = true
+										end
+									else
+										v13.UsePartColor = p6:IsA("UnionOperation") and p6.UsePartColor or nil
+										p6.UsePartColor = true
+									end
+								end
+							end
+							if _G.VM and (_G.VM.CloneTool and p6:IsDescendantOf(_G.VM.CloneTool)) then
+								v13.VM_Color = true
+							end
+						end
+					else
+						v13.Color = v13.OColor or p6.Color
+						v15 = v13.NColor or p6.Color
+						v16 = 1
+						if not p6:GetAttribute("HasSpecialMesh") then
+							if p6:FindFirstChildOfClass("SpecialMesh") then
+								if p6:FindFirstChildOfClass("SpecialMesh").MeshId ~= "" then
+									v16 = 20
+									v7(p6)
+								elseif p6:IsDescendantOf(workspace.Debris.BloodInstances) then
+									v15 = NightVisionEffect.Config.COLOR
+								elseif p9 then
+									v16 = NightVisionEffect.Config.ArmorMulti
+								elseif p8 then
+									v16 = NightVisionEffect.Config.ToolMulti
+								elseif v12 then
+									v16 = NightVisionEffect.Config.VPartMulti
+								else
+									v16 = NightVisionEffect.Config.NeonMulti
+								end
+							elseif p6:IsDescendantOf(workspace.Debris.BloodInstances) then
+								v15 = NightVisionEffect.Config.COLOR
+							elseif p9 then
+								v16 = NightVisionEffect.Config.ArmorMulti
+							elseif p8 then
+								v16 = NightVisionEffect.Config.ToolMulti
+							elseif v12 then
+								v16 = NightVisionEffect.Config.VPartMulti
+							else
+								v16 = NightVisionEffect.Config.NeonMulti
+							end
+						else
+							v16 = 20
+							v7(p6)
+						end
+						if not v13.VM_Color then
+							p6.Color = Color3.new(math.min(v15.R * v16, 1), math.min(v15.G * v16, 1), math.min(v15.B * v16, 1))
+							if p6:IsA("UnionOperation") then
+								if NightVisionEffect.MonitoredInstances[p6] then
+									if not NightVisionEffect.MonitoredInstances[p6].UsePartColor then
+										v13.UsePartColor = p6:IsA("UnionOperation") and p6.UsePartColor or nil
+										p6.UsePartColor = true
+									end
+								else
+									v13.UsePartColor = p6:IsA("UnionOperation") and p6.UsePartColor or nil
+									p6.UsePartColor = true
+								end
+							end
+						end
+						if _G.VM and (_G.VM.CloneTool and p6:IsDescendantOf(_G.VM.CloneTool)) then
+							v13.VM_Color = true
+						end
+					end
+				end
+				u2(p6, "Color", p7, p8, p9)
+				u2(p6, "Material", p7, p8, p9)
+				u3()
+			end
+		end
+	end
+	if v12 then
+		local v17 = p6:FindFirstChildOfClass("SpecialMesh")
+		if v17 then
+			v7(v17)
+		end
+		if p6:IsA("MeshPart") then
+			if NightVisionEffect.MonitoredInstances[p6] then
+				if NightVisionEffect.MonitoredInstances[p6].TextureID then
+					if p10 == "TextureID" then
+						v13.TextureID = p6.TextureID
+						p6.TextureID = ""
+					end
+				else
+					v13.TextureID = p6.TextureID
+					p6.TextureID = ""
+				end
+			else
+				v13.TextureID = p6.TextureID
+				p6.TextureID = ""
+			end
+			u2(p6, "TextureID", p7, p8, p9)
+			u3()
+		end
+		local v18, v19, NightVisionEffect0 = pairs(p6:GetDescendants())
+		while true do
+			local NightVisionEffect1, NightVisionEffect2 = v18(v19, NightVisionEffect0)
+			if NightVisionEffect1 then
+
+			else
+				break
+			end
+			NightVisionEffect0 = NightVisionEffect1
+			v5(NightVisionEffect2, true)		
+		end
+	end
+	NightVisionEffect.MonitoredInstances[p6] = v13
+end
+local NightVision = game:GetService("ReplicatedStorage").Storage.VisC7
+local u5 = 0
+local function u6()
+	if not NightVisionEffect.Temp or not NightVisionEffect.Temp.GrainS or not NightVisionEffect.Temp.GrainImage then
+		return
+	end
+	local NightVisionEffect3 = 300 * (NightVisionEffect.Temp.GrainS.Size * 0.02)
+	if tick() - u5 < 1 / (40 * (NightVisionEffect.Temp.GrainS.Speed * 0.02)) then
+		return
+	end
+	u5 = tick()
+	NightVisionEffect.Temp.GrainImage.TileSize = UDim2.new(math.random(NightVisionEffect3 * 0.89, NightVisionEffect3 * 1.11) / 1000, 0, math.random(NightVisionEffect3 * 0.89, NightVisionEffect3 * 1.11) / 1000, 0)
+end
+local NightVisionEffect5
+local function u7(p15, p16)
+	local NightVisionEffect4 = p15.Parent ~= workspace.Characters
+	if NightVisionEffect4 then
+		NightVisionEffect5 = not p16 and p15:WaitForChild("NPC", 10) or p15:WaitForChild("Humanoid", 10)
+	else
+		NightVisionEffect5 = p15:WaitForChild("Humanoid", 10)
+	end
+	if not NightVisionEffect5 then
+		return
+	end
+	if not NightVisionEffect4 and not p16 and not NightVisionEffect5:GetAttribute("HasLoaded2") then
+		NightVisionEffect5:GetAttributeChangedSignal("HasLoaded2"):Wait()
+	end
+	local l__IsRCU__8 = p15:FindFirstChild("IsRCU")
+	local u9 = _G.GVF and _G.GVF(p15.Name)
+	local function NightVisionEffect6(p17)
+		local l__DisplayItems__27 = p15:FindFirstChild("DisplayItems")
+		if l__DisplayItems__27 and p17:IsDescendantOf(l__DisplayItems__27) then
+			MonitorPart(p17, l__IsRCU__8, true)
+			return
+		end
+		if u9 and (not (not u9.Armor_BodyOBJ.Value) and not (not p17:IsDescendantOf(u9.Armor_BodyOBJ.Value)) or u9.Armor_HeadOBJ.Value and p17:IsDescendantOf(u9.Armor_HeadOBJ.Value)) then
+			if not l__IsRCU__8 then
+				MonitorPart(p17, l__IsRCU__8, true, true)
+				u3()
+				return
+			end
+		else
+			MonitorPart(p17, l__IsRCU__8)
+		end
+	end
+	local function NightVisionEffect8(p18)
+		if not l__IsRCU__8 and (p18:IsA("Shirt") or p18:IsA("Pants")) then
+			local NightVisionEffect9 = NightVisionEffect.MonitoredInstances[p18] or {}
+			NightVisionEffect9.Parent = p18.Parent
+			NightVisionEffect.MonitoredInstances[p18] = NightVisionEffect9
+			p18.Parent = nil
+			u3()
+			return
+		end
+		if not l__IsRCU__8 and p18:IsA("BodyColors") then
+			local v30 = NightVisionEffect.MonitoredInstances[p18] or {}
+			v30.HeadColor3 = p18.HeadColor3
+			v30.TorsoColor3 = p18.TorsoColor3
+			v30.LeftArmColor3 = p18.LeftArmColor3
+			v30.LeftLegColor3 = p18.LeftLegColor3
+			v30.RightArmColor3 = p18.RightArmColor3
+			v30.RightLegColor3 = p18.RightLegColor3
+			p18.HeadColor3 = NightVisionEffect.Config.COLOR
+			p18.TorsoColor3 = NightVisionEffect.Config.COLOR
+			p18.LeftArmColor3 = NightVisionEffect.Config.COLOR
+			p18.LeftLegColor3 = NightVisionEffect.Config.COLOR
+			p18.RightArmColor3 = NightVisionEffect.Config.COLOR
+			p18.RightLegColor3 = NightVisionEffect.Config.COLOR
+			NightVisionEffect.MonitoredInstances[p18] = v30
+			u3()
+			return
+		end
+		if not l__IsRCU__8 and p18:IsA("CharacterMesh") then
+			local v31 = NightVisionEffect.MonitoredInstances[p18] or {}
+			v31.Parent = p18.Parent
+			NightVisionEffect.MonitoredInstances[p18] = v31
+			p18.Parent = nil
+			u3()
+			return
+		end
+		if not (not l__IsRCU__8) or not p18:IsA("Accessory") then
+			if p18:IsA("Tool") then
+				for v32, v33 in pairs(p18:GetDescendants()) do
+					MonitorPart(v33, l__IsRCU__8, true)
+				end
+				u3()
+			end
+			return
+		end
+		local l__Handle__34 = p18:FindFirstChild("Handle")
+		local v35 = l__Handle__34 and l__Handle__34:FindFirstChildOfClass("SpecialMesh")
+		if v35 and v35:IsA("SpecialMesh") and v35.MeshId ~= "" then
+			local v36 = NightVisionEffect.MonitoredInstances[v35] or {}
+			v36.VertexColor = v35.VertexColor
+			v36.TextureId = v35.TextureId
+			v35.VertexColor = Vector3.new(1, 1, 1)
+			v35.TextureId = ""
+			NightVisionEffect.MonitoredInstances[v35] = v36
+			local v37 = NightVisionEffect.MonitoredInstances[l__Handle__34] or {}
+			v37.Color = l__Handle__34.Color
+			l__Handle__34.Color = NightVisionEffect.Config.ACCESSORY_COLOR
+			NightVisionEffect.MonitoredInstances[l__Handle__34] = v37
+		end
+		u3()
+	end
+	for v38, v39 in pairs(p15:GetChildren()) do
+		coroutine.wrap(function()
+			NightVisionEffect8(v39)
+		end)()
+	end
+	table.insert(NightVisionEffect.Connections, p15.ChildAdded:Connect(NightVisionEffect8))
+	for v40, v41 in pairs(p15:GetDescendants()) do
+		coroutine.wrap(function()
+			NightVisionEffect6(v41)
+		end)()
+	end
+	table.insert(NightVisionEffect.Connections, p15.DescendantAdded:Connect(NightVisionEffect6))
+	if not l__IsRCU__8 and p15:FindFirstChild("Head") then
+		local v42 = NightVision.HeadMesh:Clone()
+		v42.Anchored = false
+		local v43 = NightVisionEffect.MonitoredInstances[v42] or {}
+		v43.Destroy = true
+		NightVisionEffect.MonitoredInstances[v42] = v43
+		local v44 = Instance.new("ManualWeld")
+		v44.Part0 = p15.Head
+		v44.Part1 = v42
+		v44.Parent = v42
+		v42.Parent = p15.Head
+		v42.Color = NightVisionEffect.Config.COLOR
+		v42.Transparency = p15.Head.Transparency
+		table.insert(NightVisionEffect.Connections, p15.Head:GetPropertyChangedSignal("Transparency"):Connect(function()
+			v42.Transparency = p15.Head.Transparency
+		end))
+	end
+	if u9 and not l__IsRCU__8 then
+		table.insert(NightVisionEffect.Connections, u9.Armor_BodyOBJ.Changed:Connect(function()
+			if u9.Armor_BodyOBJ.Value and not l__IsRCU__8 then
+				for v45, v46 in pairs(u9.Armor_BodyOBJ.Value:GetDescendants()) do
+					NightVisionEffect6(v46)
+				end
+			end
+		end))
+		table.insert(NightVisionEffect.Connections, u9.Armor_HeadOBJ.Changed:Connect(function()
+			if u9.Armor_HeadOBJ.Value and not l__IsRCU__8 then
+				for v47, v48 in pairs(u9.Armor_HeadOBJ.Value:GetDescendants()) do
+					NightVisionEffect6(v48)
+				end
+			end
+		end))
+	end
+end
+local l__TweenService__10 = game:GetService("TweenService")
+function NightVisionEffect.T(p19, p20, p21, p22)
+	if NightVisionEffect.BUSY then
+		return
+	end
+	NightVisionEffect.BUSY = true
+	if p19 == nil then
+		p19 = not NightVisionEffect.RUNNING
+	end
+	if p19 then
+		if NightVisionEffect.RUNNING then
+			return
+		end
+		NightVisionEffect.Temp = {}
+		NightVisionEffect.Temp.NG = p20
+		NightVisionEffect.Temp.NOL = p21
+		NightVisionEffect.Temp.GrainS = p22 or NightVisionEffect.Config.DefaultGrainS
+		NightVisionEffect.RUNNING = true
+		_G.Y8OTOP = true
+		NightVisionEffect.NG = p20
+		NightVisionEffect.RSN = 0
+		if not NightVisionEffect.Temp.NG then
+			local v49 = NightVision.OverlayGUI:Clone()
+			if not NightVisionEffect.MonitoredInstances[v49] then
+				local v50 = {}
+			end
+			NightVisionEffect.Temp.GUI = v49
+			NightVisionEffect.Temp.GrainImage = v49.GrainImage
+			NightVisionEffect.Temp.BlackFrame = v49.Black
+			NightVisionEffect.Temp.GrainImage.ImageTransparency = NightVisionEffect.Temp.GrainS.Visibility
+			if NightVisionEffect.Temp.NOL then
+				NightVisionEffect.Temp.GUI.Overlay.Visible = false
+			end
+			NightVisionEffect.Temp.GrainImage.Visible = true
+			v49.Parent = Players.LocalPlayer.PlayerGui
+			u6()
+			table.insert(NightVisionEffect.Connections, RunService.RenderStepped:Connect(u6))
+		end
+		for v51, v52 in pairs(workspace.Characters:GetChildren()) do
+			coroutine.wrap(function()
+				u7(v52)
+			end)()
+		end
+		for v53, v54 in pairs(workspace.Map.Shopz:GetChildren()) do
+			coroutine.wrap(function()
+				u7(v54:FindFirstChild("DealerMan") or v54:FindFirstChild("ArmoryMan"))
+			end)()
+		end
+		if _G.VM and _G.VM.Current and (not Players.LocalPlayer.Character or not Players.LocalPlayer.Character:FindFirstChild("IsRCU")) then
+			u7(_G.VM.Current, true)
+		end
+		table.insert(NightVisionEffect.Connections, workspace.Characters.ChildAdded:Connect(function(p23)
+			wait(0.5)
+			if true then
+				u7(p23)
+			end
+		end))
+		table.insert(NightVisionEffect.Connections, workspace.Terrain.DescendantAdded:Connect(MonitorPart))
+		local v55 = NightVision.CC:Clone()
+		v55.Parent = workspace.CurrentCamera
+		v55.Enabled = true
+		game.Lighting:FindFirstChildOfClass("ColorCorrectionEffect").Enabled = false
+		NightVisionEffect.CC = v55
+		if NightVisionEffect.WorkspaceInstances then
+			for v56, v57 in pairs(NightVisionEffect.WorkspaceInstances) do
+				MonitorPart(v57)
+			end
+		else
+			local function v58(p24)
+				for v59, v60 in pairs(p24:GetDescendants()) do
+					MonitorPart(v60)
+				end
+				table.insert(NightVisionEffect.Connections, p24.DescendantAdded:Connect(MonitorPart))
+			end
+			v58(workspace.Filter)
+			v58(workspace.Debris)
+			v58(workspace.Map)
+		end
+		if NightVisionEffect.Temp.BlackFrame then
+			l__TweenService__10:Create(NightVisionEffect.Temp.BlackFrame, TweenInfo.new(1, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut), {
+				BackgroundTransparency = 1
+			}):Play()
+		end
+	elseif not p19 then
+		if not NightVisionEffect.RUNNING then
+			return
+		end
+		NightVisionEffect.RUNNING = false
+		_G.Y8OTOP = false
+		if NightVisionEffect.Temp.GUI and NightVisionEffect.Temp.GUI.Parent then
+			game.Debris:AddItem(NightVisionEffect.Temp.GUI, 2)
+		end
+		for v61, v62 in pairs(NightVisionEffect.Connections) do
+			if v62 then
+				pcall(function()
+					v62:Disconnect()
+				end)
+			end
+		end
+		for v63, v64 in pairs(NightVisionEffect.Connections2) do
+			for v65, v66 in pairs(v64) do
+				if v66 then
+					pcall(function()
+						v66:Disconnect()
+					end)
+				end
+			end
+		end
+		if NightVisionEffect.Temp.GUI and NightVisionEffect.Temp.GUI.Parent and NightVisionEffect.Temp.BlackFrame then
+			NightVisionEffect.Temp.BlackFrame.BackgroundTransparency = 0
+			NightVisionEffect.Temp.GUI.Overlay.Visible = false
+		end
+		if NightVisionEffect.CC and NightVisionEffect.CC.Parent then
+			NightVisionEffect.CC:Destroy()
+			game.Lighting:FindFirstChildOfClass("ColorCorrectionEffect").Enabled = true
+		end
+		NightVisionEffect.CC = nil
+		for v67, v68 in pairs(NightVisionEffect.MonitoredInstances) do
+			pcall(function()
+				for v69, v70 in pairs(v68) do
+					if v69 == "Destroy" then
+						pcall(function()
+							v67:Destroy()
+						end)
+					else
+						pcall(function()
+							v67[v69] = v70
+						end)
+					end
+					u3()
+				end
+				if v67.ClassName == "BodyColors" and v67.Parent then
+					pcall(function()
+						v67.Parent.Head.Color = v67.HeadColor3
+						v67.Parent.Torso.Color = v67.TorsoColor3
+						v67.Parent["Left Arm"].Color = v67.LeftArmColor3
+						v67.Parent["Right Arm"].Color = v67.RightArmColor3
+						v67.Parent["Left Leg"].Color = v67.LeftLegColor3
+						v67.Parent["Right Leg"].Color = v67.RightLegColor3
+					end)
+					coroutine.wrap(function()
+
+						v67.Parent = v67.Parent and v67.Parent:FindFirstChild("Humanoid")
+						RunService.RenderStepped:Wait()
+					end)()
+				end
+			end)
+		end
+		if NightVisionEffect.Temp.GUI and NightVisionEffect.Temp.GUI.Parent and NightVisionEffect.Temp.BlackFrame then
+			l__TweenService__10:Create(NightVisionEffect.Temp.BlackFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut), {
+				BackgroundTransparency = 1
+			}):Play()
+			l__TweenService__10:Create(NightVisionEffect.Temp.GUI.GrainImage, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut), {
+				ImageTransparency = 1
+			}):Play()
+		end
+		NightVisionEffect.Connections = {}
+		NightVisionEffect.Connections2 = {}
+		NightVisionEffect.MonitoredInstances = {}
+		NightVisionEffect.WorkspaceInstances = nil
+		NightVisionEffect.Temp = nil
+	end
+	NightVisionEffect.BUSY = false
+end
+return NightVisionEffect
